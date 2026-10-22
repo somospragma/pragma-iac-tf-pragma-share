@@ -1,0 +1,14 @@
+# Trivy — falsos positivos justificados
+# Formato: AVD-AWS-XXXX  # Justificación
+
+# AVD-AWS-0104 — Egress 0.0.0.0/0 en el SG del ALB: la carga necesita salida a
+# servicios AWS (ECR, Secrets Manager, SNS/SQS, DynamoDB, CloudWatch). El ingress
+# sí está restringido (80/443 solo desde el CIDR de la VPC). Patrón estándar.
+AVD-AWS-0104
+
+# AVD-AWS-0053 — "Load balancer exposed publicly": falso positivo. Trivy escanea el
+# código fuente del módulo (.terraform/modules/alb/main.tf) donde `internal` es una
+# variable sin resolver (each.value.internal), no puede evaluar su valor. En nuestra
+# config el ALB es INTERNO (internal = true en terraform.tfvars, subredes privadas),
+# requisito para la integración privada vía API Gateway VPC Link. No hay exposición pública.
+AVD-AWS-0053
